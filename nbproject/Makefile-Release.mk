@@ -35,6 +35,9 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/cCamera.o \
+	${OBJECTDIR}/cCommonTools.o \
+	${OBJECTDIR}/cUnitTest.o \
 	${OBJECTDIR}/main.o
 
 
@@ -42,8 +45,8 @@ OBJECTFILES= \
 CFLAGS=
 
 # CC Compiler Flags
-CCFLAGS=-std=c++0x -lboost_program_options -lboost_serialization -lboost_filesystem -lboost_system
-CXXFLAGS=-std=c++0x -lboost_program_options -lboost_serialization -lboost_filesystem -lboost_system
+CCFLAGS=-std=c++11 -lraspicam
+CXXFLAGS=-std=c++11 -lraspicam
 
 # Fortran Compiler Flags
 FFLAGS=
@@ -62,10 +65,25 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/trainpassingcounter: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/trainpassingcounter ${OBJECTFILES} ${LDLIBSOPTIONS}
 
+${OBJECTDIR}/cCamera.o: cCamera.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/cCamera.o cCamera.cpp
+
+${OBJECTDIR}/cCommonTools.o: cCommonTools.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/cCommonTools.o cCommonTools.cpp
+
+${OBJECTDIR}/cUnitTest.o: cUnitTest.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/cUnitTest.o cUnitTest.cpp
+
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -I/usr/include/boost -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
 
 # Subprojects
 .build-subprojects:

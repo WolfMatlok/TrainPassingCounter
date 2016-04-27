@@ -1,20 +1,15 @@
-/* 
- * File:   main.cpp
- * Author: juia
- *
- * Created on 30. März 2016, 21:58
- */
+#include <iostream>
+#include "cUnitTest.h"
 
-#include <cstdlib>
 
-using namespace std;
-
-/*
- * 
- */
-int main(int argc, char** argv)
+ 
+int main ( int argc,char **argv )
 {
-
+#if 1
+  cUnitTest::DoAllTests();
+  return 0;
+#endif  
+  
+  
   return 0;
 }
-

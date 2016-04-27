@@ -4,6 +4,9 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>cCamera.h</itemPath>
+      <itemPath>cCommonTools.h</itemPath>
+      <itemPath>cUnitTest.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -12,6 +15,9 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>cCamera.cpp</itemPath>
+      <itemPath>cCommonTools.cpp</itemPath>
+      <itemPath>cUnitTest.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -36,12 +42,22 @@
       </toolsSet>
       <compileType>
         <ccTool>
-          <incDir>
-            <pElem>/usr/include/boost</pElem>
-          </incDir>
-          <commandLine>-std=c++0x -lboost_program_options -lboost_serialization -lboost_filesystem -lboost_system</commandLine>
+          <commandlineTool>g++</commandlineTool>
+          <commandLine>`pkg-config opencv --cflags --libs` -std=c++0x -L /opt/vc/lib -lraspicam -lraspicam_cv -lmmal -lmmal_core -lmmal_util -lopencv_imgproc -lopencv_core -lboost_thread -lboost_system</commandLine>
         </ccTool>
       </compileType>
+      <item path="cCamera.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="cCamera.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="cCommonTools.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="cCommonTools.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="cUnitTest.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="cUnitTest.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
     </conf>
@@ -57,10 +73,7 @@
         </cTool>
         <ccTool>
           <developmentMode>5</developmentMode>
-          <incDir>
-            <pElem>/usr/include/boost</pElem>
-          </incDir>
-          <commandLine>-std=c++0x -lboost_program_options -lboost_serialization -lboost_filesystem -lboost_system</commandLine>
+          <commandLine>-std=c++11 -lraspicam</commandLine>
         </ccTool>
         <fortranCompilerTool>
           <developmentMode>5</developmentMode>
@@ -69,6 +82,18 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
+      <item path="cCamera.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="cCamera.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="cCommonTools.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="cCommonTools.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="cUnitTest.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="cUnitTest.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
     </conf>
