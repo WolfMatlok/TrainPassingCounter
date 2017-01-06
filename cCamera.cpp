@@ -6,7 +6,7 @@
  */
 
 #include <stdexcept>
-#include <opencv2/imgcodecs.hpp>
+#include <opencv2/imgproc.hpp>
 #include "cCamera.h"
 #include "cCommonTools.h"
 
@@ -35,5 +35,3 @@ void cCamera::getImage(cv::Mat& p_oImage)
   m_oCamera.grab();
   m_oCamera.retrieve(p_oImage);
 }
-
-

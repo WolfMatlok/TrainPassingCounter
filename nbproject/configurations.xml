@@ -6,6 +6,8 @@
                    projectFiles="true">
       <itemPath>cCamera.h</itemPath>
       <itemPath>cCommonTools.h</itemPath>
+      <itemPath>cDetector.h</itemPath>
+      <itemPath>cGyroServer.h</itemPath>
       <itemPath>cUnitTest.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
@@ -17,6 +19,8 @@
                    projectFiles="true">
       <itemPath>cCamera.cpp</itemPath>
       <itemPath>cCommonTools.cpp</itemPath>
+      <itemPath>cDetector.cpp</itemPath>
+      <itemPath>cGyroServer.cpp</itemPath>
       <itemPath>cUnitTest.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>
@@ -43,7 +47,7 @@
       <compileType>
         <ccTool>
           <commandlineTool>g++</commandlineTool>
-          <commandLine>`pkg-config opencv --cflags --libs` -std=c++0x -L /opt/vc/lib -lraspicam -lraspicam_cv -lmmal -lmmal_core -lmmal_util -lopencv_imgproc -lopencv_core -lboost_thread -lboost_system</commandLine>
+          <commandLine>`pkg-config opencv --cflags --libs` -std=c++11 -L /opt/vc/lib -lraspicam -lraspicam_cv -lmmal -lmmal_core -lmmal_util -lopencv_imgproc -lopencv_core -lboost_thread -lboost_system -lboost_chrono -lwiringPi</commandLine>
         </ccTool>
       </compileType>
       <item path="cCamera.cpp" ex="false" tool="1" flavor2="0">
@@ -53,6 +57,14 @@
       <item path="cCommonTools.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="cCommonTools.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="cDetector.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="cDetector.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="cGyroServer.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="cGyroServer.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="cUnitTest.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -73,7 +85,7 @@
         </cTool>
         <ccTool>
           <developmentMode>5</developmentMode>
-          <commandLine>-std=c++11 -lraspicam</commandLine>
+          <commandLine>`pkg-config opencv --cflags --libs` -std=c++11 -L /opt/vc/lib -lraspicam -lraspicam_cv -lmmal -lmmal_core -lmmal_util -lopencv_imgproc -lopencv_core -lboost_thread -lboost_system -lboost_chrono -lwiringPi</commandLine>
         </ccTool>
         <fortranCompilerTool>
           <developmentMode>5</developmentMode>
@@ -89,6 +101,14 @@
       <item path="cCommonTools.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="cCommonTools.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="cDetector.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="cDetector.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="cGyroServer.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="cGyroServer.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="cUnitTest.cpp" ex="false" tool="1" flavor2="0">
       </item>

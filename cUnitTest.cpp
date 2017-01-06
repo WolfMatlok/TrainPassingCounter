@@ -53,28 +53,30 @@ void cUnitTest::CheckDifference()
   double dMin, dMax;
 
   cCamera oCam;
-  
+
   oCam.getImage(oImageA);
 
 
   for (double dN = 0; dN <= 1000.; dN++)
-  {    
+  {
     oCam.getImage(oImageB);
 
-    cv::absdiff(oImageA, oImageB, oImageDiff);  
-    
-    
+    cv::absdiff(oImageA, oImageB, oImageDiff);
+
+
     cv::threshold(oImageDiff, oImageDiff, 80, 255, cv::THRESH_BINARY);
     cv::erode(oImageDiff, oImageDiff, cv::getStructuringElement(cv::MORPH_RECT, cv::Size(3, 3)));
-    
-    //save image 
-    std::string strImgName = STREAMSTRING("/home/pi/images/raspicam_cv_image_" << FI(4,'0') <<  dN <<  ".jpg");
-    cv::imwrite(strImgName, oImageDiff);
-    LOG_TRACE("Image saved to " << strImgName);
-    
-    //cv::minMaxLoc(oImageDiff, &dMin, &dMax);
-    LOG_TRACE("Progress:" << FF(3, 3,'0') << dN/2000 << "% Min:" << FI(3,'0') << dMin << " Max:" << FI(3,'0') << dMax);
 
-    
+    //save image 
+    std::string strImgName = STREAMSTRING("/home/pi/images/raspicam_cv_image_" << FI(4, '0') << dN << ".jpg");
+    cv::imwrite(strImgName, oImageDiff);
+    //LOG_TRACE("Image saved to " << strImgName);
+
+    cv::minMaxLoc(oImageDiff, &dMin, &dMax);
+    std::cout << "\r Progress:" << FF(3, 3, '0') << dN / 10. << "% Min:" << FI(3, '0') << dMin << " Max:" << FI(3, '0') << dMax << std::flush;
+
+
   }
+  
+  std::cout << std::endl;
 }

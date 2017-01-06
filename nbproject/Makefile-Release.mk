@@ -37,6 +37,8 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/cCamera.o \
 	${OBJECTDIR}/cCommonTools.o \
+	${OBJECTDIR}/cDetector.o \
+	${OBJECTDIR}/cGyroServer.o \
 	${OBJECTDIR}/cUnitTest.o \
 	${OBJECTDIR}/main.o
 
@@ -45,8 +47,8 @@ OBJECTFILES= \
 CFLAGS=
 
 # CC Compiler Flags
-CCFLAGS=-std=c++11 -lraspicam
-CXXFLAGS=-std=c++11 -lraspicam
+CCFLAGS=`pkg-config opencv --cflags --libs` -std=c++11 -L /opt/vc/lib -lraspicam -lraspicam_cv -lmmal -lmmal_core -lmmal_util -lopencv_imgproc -lopencv_core -lboost_thread -lboost_system -lboost_chrono -lwiringPi 
+CXXFLAGS=`pkg-config opencv --cflags --libs` -std=c++11 -L /opt/vc/lib -lraspicam -lraspicam_cv -lmmal -lmmal_core -lmmal_util -lopencv_imgproc -lopencv_core -lboost_thread -lboost_system -lboost_chrono -lwiringPi 
 
 # Fortran Compiler Flags
 FFLAGS=
@@ -74,6 +76,16 @@ ${OBJECTDIR}/cCommonTools.o: cCommonTools.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/cCommonTools.o cCommonTools.cpp
+
+${OBJECTDIR}/cDetector.o: cDetector.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/cDetector.o cDetector.cpp
+
+${OBJECTDIR}/cGyroServer.o: cGyroServer.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/cGyroServer.o cGyroServer.cpp
 
 ${OBJECTDIR}/cUnitTest.o: cUnitTest.cpp 
 	${MKDIR} -p ${OBJECTDIR}
