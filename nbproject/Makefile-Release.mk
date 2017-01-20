@@ -35,6 +35,8 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/TimeServer.o \
+	${OBJECTDIR}/TimeServerClock.o \
 	${OBJECTDIR}/cCamera.o \
 	${OBJECTDIR}/cCommonTools.o \
 	${OBJECTDIR}/cDetector.o \
@@ -67,35 +69,45 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/trainpassingcounter: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/trainpassingcounter ${OBJECTFILES} ${LDLIBSOPTIONS}
 
+${OBJECTDIR}/TimeServer.o: TimeServer.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -I/usr/include/eigen3 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/TimeServer.o TimeServer.cpp
+
+${OBJECTDIR}/TimeServerClock.o: TimeServerClock.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -I/usr/include/eigen3 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/TimeServerClock.o TimeServerClock.cpp
+
 ${OBJECTDIR}/cCamera.o: cCamera.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/cCamera.o cCamera.cpp
+	$(COMPILE.cc) -O2 -I/usr/include/eigen3 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/cCamera.o cCamera.cpp
 
 ${OBJECTDIR}/cCommonTools.o: cCommonTools.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/cCommonTools.o cCommonTools.cpp
+	$(COMPILE.cc) -O2 -I/usr/include/eigen3 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/cCommonTools.o cCommonTools.cpp
 
 ${OBJECTDIR}/cDetector.o: cDetector.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/cDetector.o cDetector.cpp
+	$(COMPILE.cc) -O2 -I/usr/include/eigen3 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/cDetector.o cDetector.cpp
 
 ${OBJECTDIR}/cGyroServer.o: cGyroServer.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/cGyroServer.o cGyroServer.cpp
+	$(COMPILE.cc) -O2 -I/usr/include/eigen3 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/cGyroServer.o cGyroServer.cpp
 
 ${OBJECTDIR}/cUnitTest.o: cUnitTest.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/cUnitTest.o cUnitTest.cpp
+	$(COMPILE.cc) -O2 -I/usr/include/eigen3 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/cUnitTest.o cUnitTest.cpp
 
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
+	$(COMPILE.cc) -O2 -I/usr/include/eigen3 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
 
 # Subprojects
 .build-subprojects:

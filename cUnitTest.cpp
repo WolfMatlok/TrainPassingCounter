@@ -6,15 +6,20 @@
  */
 
 #include "cUnitTest.h"
+#include "cGyroServer.h"
 #include "cCamera.h"
 #include "cCommonTools.h"
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
+#include "TimeServer.h"
+#include "TimeServerClock.h"
 
 using namespace std;
 
 void cUnitTest::DoAllTests()
 {
+  CheckTimeServer();
+  CheckGyroSensor();
   CheckFPSCamera();
   CheckDifference();
 }
@@ -79,4 +84,47 @@ void cUnitTest::CheckDifference()
   }
   
   std::cout << std::endl;
+}
+
+void cUnitTest::CheckGyroSensor()
+{
+  cGyroServer oGyroDev(0x68);
+  
+  //for(int iN = 1; iN <=10000; ++iN)
+  while(true)
+  {
+    oGyroDev.processData();
+  }
+
+}
+
+boost::gregorian::date EPOCHE_1_1_2017 = boost::gregorian::date(2017, 1, 1);
+boost::gregorian::date EPOCHE_1_1_2018 = boost::gregorian::date(2018, 1, 1);
+
+void cUnitTest::CheckTimeServer()
+{
+  using namespace helper;
+  auto nowTSUnix = TimeServerUnix::getTimestampCurrent();
+	auto strTSUNIX = TimeServerUnix::getFormattedTime(nowTSUnix);
+	auto nowTPUnix = TimeServerUnix::getTimepointCurrent();
+	auto strTPUNIX = TimeServerUnix::getFormattedTime(nowTPUnix);
+
+	auto nowTSNT = TimeServerNT::getTimestampCurrent();
+	auto strTSNT = TimeServerNT::getFormattedTime(nowTSNT);
+	auto nowTPNT = TimeServerNT::getTimepointCurrent();
+	auto strTPNT = TimeServerNT::getFormattedTime(nowTPNT);
+
+	
+	typedef helper::TimeServer<&EPOCHE_1_1_2017> TimeServerSince20170101;
+	auto nowTS20170101 = TimeServerSince20170101::getTimestampCurrent();
+	auto strTS20170101 = TimeServerSince20170101::getFormattedTime(nowTS20170101);
+	auto nowTP20170101 = TimeServerSince20170101::getTimepointCurrent();
+	auto strTP20170101 = TimeServerSince20170101::getFormattedTime(nowTP20170101);
+
+
+	typedef helper::TimeServer<&EPOCHE_1_1_2018> TimeServerSince20180101;
+	auto nowTS20180101 = TimeServerSince20180101::getTimestampCurrent();
+	auto strTS20180101 = TimeServerSince20180101::getFormattedTime(nowTS20180101);
+	auto nowTP20180101 = TimeServerSince20180101::getTimepointCurrent();
+	auto strTP20180101 = TimeServerSince20180101::getFormattedTime(nowTP20180101);
 }

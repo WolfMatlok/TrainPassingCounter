@@ -23,7 +23,7 @@ using namespace boost::local_time;
 using namespace boost::gregorian;
 
 
-const boost::gregorian::date cCommonTools::m_oEpocheStart = EPOCHE_START_2014_1_1;
+const boost::gregorian::date cCommonTools::m_oEpocheStart = boost::gregorian::date(2017,1,1);
 
 
 int cCommonTools::_kbhit()
@@ -52,8 +52,14 @@ int cCommonTools::_kbhit()
     return select(STDIN + 1, &rdset, NULL, NULL, &timeout);
 }
 
-void cCommonTools::Sleep(nTimeTypes::MilliSecs p_oTimeMS) {
-    boost::this_thread::sleep(boost::posix_time::milliseconds(p_oTimeMS));
+void cCommonTools::Sleep(nTimeTypes::MilliSecs p_oTimeMS)
+{
+  if (p_oTimeMS == 0.)
+  {
+    return;
+  }
+
+  boost::this_thread::sleep(boost::posix_time::milliseconds(p_oTimeMS));
 }
 
 bool cCommonTools::Break(const char p_cKey) {

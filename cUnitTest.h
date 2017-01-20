@@ -19,6 +19,10 @@ public:
   static void CheckFPSCamera();
   
   static void CheckDifference();
+  
+  static void CheckGyroSensor();
+  
+  static void CheckTimeServer();
 private:
 
 };

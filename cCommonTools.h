@@ -13,8 +13,10 @@
 #include <functional>
 #include <string>
 #include <exception>
+#include <numeric>
 
 #include <boost/date_time/gregorian/gregorian.hpp>
+#include <boost/circular_buffer.hpp>
 
 
 #define STREAMSTRING(STRMSG)        [&]()->std::string{using namespace std; stringstream oStr023974tcnw0re; oStr023974tcnw0re << STRMSG; return oStr023974tcnw0re.str();}()
@@ -31,10 +33,6 @@
 #define LOG_WARNING(STRMSG)         std::cout << "WARNING: " << LOGSTR(__FUNCTION__, STRMSG) << std::endl
 #define LOG_DEBUG(STRMSG)           std::cout << "  DEBUG: " << LOGSTR(__FUNCTION__, STRMSG) << std::endl
 #define LOG_TRACE(STRMSG)           std::cout << "  TRACE: " << LOGSTR(__FUNCTION__, STRMSG) << std::endl
-
-#define EPOCHE_START_2014_1_1 boost::gregorian::date(2014,1,1)
-#define EPOCHE_START_1970_1_1 boost::gregorian::date(1970,1,1)
-
 
 namespace nTimeTypes
 {
@@ -61,6 +59,78 @@ public:
 
 private:
 
+};
+
+struct AVGDEVCOUNTER2
+{
+  AVGDEVCOUNTER2(){Reset();};
+  
+  ~AVGDEVCOUNTER2(){};
+  
+  void SetValue(double p_dNewValue)
+  {
+    m_dSum += p_dNewValue;
+    m_dSumSquare += (p_dNewValue*p_dNewValue);
+    m_dN++;
+  };
+  
+  double GetAvg(){ return m_dSum/m_dN; };
+  double GetStdDev(){ return sqrt( (m_dSumSquare/m_dN) - ((m_dSum*m_dSum)/(m_dN*m_dN)) ); };
+  
+  void Reset(){ m_dN = 1.; m_dSum=0.; m_dSumSquare=0.; };
+  
+  double m_dN;
+  double m_dSum;
+  double m_dSumSquare;
+};
+
+/**
+ * Uses a defined size
+ */
+template<typename PDT = double>
+struct AVGDEVCOUNTER3
+{
+  AVGDEVCOUNTER3(unsigned int p_uiMaxSize)
+  : m_oBufferCircular(p_uiMaxSize)
+  , m_oBufferCircularSquare(p_uiMaxSize)
+  {
+    Reset();
+  };
+  
+  ~AVGDEVCOUNTER3(){};
+  
+  void SetValue(PDT p_dNewValue)
+  {
+    m_oBufferCircular.push_back(p_dNewValue);
+    m_oBufferCircularSquare.push_back(p_dNewValue*p_dNewValue);
+  };
+  
+  PDT GetAvg()
+  {
+    PDT dSum = GetSum();
+    PDT dN = GetN();
+    return dSum/dN;
+  };
+  
+  PDT GetStdDev()
+  {
+    PDT m_dSum = GetSum();
+    PDT m_dSumSquare = GetSumSquare();
+    PDT m_dN = GetN();
+    return sqrt( (m_dSumSquare/m_dN) - ((m_dSum*m_dSum)/(m_dN*m_dN)) );
+  };
+  
+  PDT GetSum(){return std::accumulate(m_oBufferCircular.begin(), m_oBufferCircular.end(), 0.);};  
+  PDT GetSumSquare(){return std::accumulate(m_oBufferCircularSquare.begin(), m_oBufferCircularSquare.end(), 0.);};
+  
+  void Reset(){ m_oBufferCircular.clear(); m_oBufferCircularSquare.clear(); };
+  
+  PDT GetN(){return m_oBufferCircular.size();};
+  
+  bool Full(){return m_oBufferCircular.full();};
+  
+  boost::circular_buffer<PDT> m_oBufferCircular;
+  boost::circular_buffer<PDT> m_oBufferCircularSquare;
 };
 
 #endif	/* CCOMMONTOOLS_H */

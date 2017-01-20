@@ -8,7 +8,7 @@ int main ( int argc,char **argv )
 #if 1
   cUnitTest::DoAllTests();
   return 0;
-#endif  
+#endif
   
   
   return 0;
