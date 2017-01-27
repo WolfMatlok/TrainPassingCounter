@@ -4,6 +4,8 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>Age.h</itemPath>
+      <itemPath>FFTAnalyser.h</itemPath>
       <itemPath>TimeServer.h</itemPath>
       <itemPath>TimeServerClock.h</itemPath>
       <itemPath>cCamera.h</itemPath>
@@ -19,6 +21,8 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>Age.cpp</itemPath>
+      <itemPath>FFTAnalyser.cpp</itemPath>
       <itemPath>TimeServer.cpp</itemPath>
       <itemPath>TimeServerClock.cpp</itemPath>
       <itemPath>cCamera.cpp</itemPath>
@@ -57,6 +61,14 @@
           <commandLine>`pkg-config opencv --cflags --libs` -std=c++11 -L /opt/vc/lib -lraspicam -lraspicam_cv -lmmal -lmmal_core -lmmal_util -lopencv_imgproc -lopencv_core -lboost_thread -lboost_system -lboost_chrono -lwiringPi</commandLine>
         </ccTool>
       </compileType>
+      <item path="Age.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Age.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="FFTAnalyser.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="FFTAnalyser.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="TimeServer.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="TimeServer.h" ex="false" tool="3" flavor2="0">
@@ -112,6 +124,14 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
+      <item path="Age.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Age.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="FFTAnalyser.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="FFTAnalyser.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="TimeServer.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="TimeServer.h" ex="false" tool="3" flavor2="0">

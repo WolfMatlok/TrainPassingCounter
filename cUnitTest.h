@@ -23,6 +23,8 @@ public:
   static void CheckGyroSensor();
   
   static void CheckTimeServer();
+  
+  static void CheckFFT();
 private:
 
 };

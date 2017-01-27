@@ -13,11 +13,14 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include "TimeServer.h"
 #include "TimeServerClock.h"
+#include "FFTAnalyser.h"
 
 using namespace std;
 
 void cUnitTest::DoAllTests()
 {
+  CheckFFT();
+  return;
   CheckTimeServer();
   CheckGyroSensor();
   CheckFPSCamera();
@@ -82,16 +85,16 @@ void cUnitTest::CheckDifference()
 
 
   }
-  
+
   std::cout << std::endl;
 }
 
 void cUnitTest::CheckGyroSensor()
 {
   cGyroServer oGyroDev(0x68);
-  
+
   //for(int iN = 1; iN <=10000; ++iN)
-  while(true)
+  while (true)
   {
     oGyroDev.processData();
   }
@@ -105,26 +108,42 @@ void cUnitTest::CheckTimeServer()
 {
   using namespace helper;
   auto nowTSUnix = TimeServerUnix::getTimestampCurrent();
-	auto strTSUNIX = TimeServerUnix::getFormattedTime(nowTSUnix);
-	auto nowTPUnix = TimeServerUnix::getTimepointCurrent();
-	auto strTPUNIX = TimeServerUnix::getFormattedTime(nowTPUnix);
+  auto strTSUNIX = TimeServerUnix::getFormattedTime(nowTSUnix);
+  auto nowTPUnix = TimeServerUnix::getTimepointCurrent();
+  auto strTPUNIX = TimeServerUnix::getFormattedTime(nowTPUnix);
 
-	auto nowTSNT = TimeServerNT::getTimestampCurrent();
-	auto strTSNT = TimeServerNT::getFormattedTime(nowTSNT);
-	auto nowTPNT = TimeServerNT::getTimepointCurrent();
-	auto strTPNT = TimeServerNT::getFormattedTime(nowTPNT);
-
-	
-	typedef helper::TimeServer<&EPOCHE_1_1_2017> TimeServerSince20170101;
-	auto nowTS20170101 = TimeServerSince20170101::getTimestampCurrent();
-	auto strTS20170101 = TimeServerSince20170101::getFormattedTime(nowTS20170101);
-	auto nowTP20170101 = TimeServerSince20170101::getTimepointCurrent();
-	auto strTP20170101 = TimeServerSince20170101::getFormattedTime(nowTP20170101);
+  auto nowTSNT = TimeServerNT::getTimestampCurrent();
+  auto strTSNT = TimeServerNT::getFormattedTime(nowTSNT);
+  auto nowTPNT = TimeServerNT::getTimepointCurrent();
+  auto strTPNT = TimeServerNT::getFormattedTime(nowTPNT);
 
 
-	typedef helper::TimeServer<&EPOCHE_1_1_2018> TimeServerSince20180101;
-	auto nowTS20180101 = TimeServerSince20180101::getTimestampCurrent();
-	auto strTS20180101 = TimeServerSince20180101::getFormattedTime(nowTS20180101);
-	auto nowTP20180101 = TimeServerSince20180101::getTimepointCurrent();
-	auto strTP20180101 = TimeServerSince20180101::getFormattedTime(nowTP20180101);
+  typedef helper::TimeServer<&EPOCHE_1_1_2017> TimeServerSince20170101;
+  auto nowTS20170101 = TimeServerSince20170101::getTimestampCurrent();
+  auto strTS20170101 = TimeServerSince20170101::getFormattedTime(nowTS20170101);
+  auto nowTP20170101 = TimeServerSince20170101::getTimepointCurrent();
+  auto strTP20170101 = TimeServerSince20170101::getFormattedTime(nowTP20170101);
+
+
+  typedef helper::TimeServer<&EPOCHE_1_1_2018> TimeServerSince20180101;
+  auto nowTS20180101 = TimeServerSince20180101::getTimestampCurrent();
+  auto strTS20180101 = TimeServerSince20180101::getFormattedTime(nowTS20180101);
+  auto nowTP20180101 = TimeServerSince20180101::getTimepointCurrent();
+  auto strTP20180101 = TimeServerSince20180101::getFormattedTime(nowTP20180101);
+}
+
+void cUnitTest::CheckFFT()
+{
+  uint32_t N = 360;
+  std::vector<double> vecOverTime(N);
+  int iDegree = 0.0;
+  auto funcGenerating = [&](){return std::cos(double(iDegree++) * cCommonTools::TORAD);};
+  std::generate(vecOverTime.begin(), vecOverTime.end(), funcGenerating);
+
+  FFTAnalyser analyserFFT(N);
+  std::for_each(vecOverTime.begin(), vecOverTime.end(), [&](double sample){analyserFFT.add(sample);});
+  
+  analyserFFT.processSamples(helper::TimeServerUnix::secAsDouble(1.0));
+  
+  return;
 }

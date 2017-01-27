@@ -24,6 +24,9 @@ using namespace boost::gregorian;
 
 
 const boost::gregorian::date cCommonTools::m_oEpocheStart = boost::gregorian::date(2017,1,1);
+const double_t cCommonTools::PI = 3.14159265359;
+const double_t cCommonTools::TORAD = cCommonTools::PI / 180.;
+const double_t cCommonTools::TODEG = 180. / cCommonTools::PI;
 
 
 int cCommonTools::_kbhit()
@@ -76,3 +79,9 @@ nTimeTypes::MilliSecs cCommonTools::GetCurrentTimeStamp()
 }
 
 
+void cCommonTools::writeFile( const std::string& p_strFileName, const std::string& p_oBytes )
+{
+  std::ofstream out(p_strFileName, std::ios::out | std::ios::binary);
+  out << p_oBytes;
+  out.close();
+}

@@ -8,7 +8,6 @@
 #pragma once
 
 #include <tuple>
-
 #include "cCommonTools.h"
 
 class cGyroServer
@@ -20,6 +19,16 @@ public:
   void processData();
   
 private:
+  AVGDEVCOUNTER3<> m_oAvgTemp;
+  AVGDEVCOUNTER3<> m_oAvgX;
+  AVGDEVCOUNTER3<> m_oAvgY;
+  AVGDEVCOUNTER3<> m_oAvgAccelX;
+  AVGDEVCOUNTER3<> m_oAvgAccelY;
+  AVGDEVCOUNTER3<> m_oAvgAccelZ;
+  AVGDEVCOUNTER3<> m_oAvgGyroScopeX;
+  AVGDEVCOUNTER3<> m_oAvgGyroScopeY;
+  AVGDEVCOUNTER3<> m_oAvgGyroScopeZ;
+  
 
   int m_iFilehandleGyroDev;
   

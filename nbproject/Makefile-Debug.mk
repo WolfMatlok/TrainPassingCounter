@@ -35,6 +35,8 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/Age.o \
+	${OBJECTDIR}/FFTAnalyser.o \
 	${OBJECTDIR}/TimeServer.o \
 	${OBJECTDIR}/TimeServerClock.o \
 	${OBJECTDIR}/cCamera.o \
@@ -68,6 +70,16 @@ LDLIBSOPTIONS=
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/trainpassingcounter: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/trainpassingcounter ${OBJECTFILES} ${LDLIBSOPTIONS}
+
+${OBJECTDIR}/Age.o: Age.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I/usr/include/eigen3 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Age.o Age.cpp
+
+${OBJECTDIR}/FFTAnalyser.o: FFTAnalyser.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I/usr/include/eigen3 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/FFTAnalyser.o FFTAnalyser.cpp
 
 ${OBJECTDIR}/TimeServer.o: TimeServer.cpp 
 	${MKDIR} -p ${OBJECTDIR}

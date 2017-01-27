@@ -26,7 +26,7 @@ namespace helper
     static const boost::gregorian::date EPOCHE_START_1601_1_1;
   };
 
-  template<const boost::gregorian::date* T_EPOCHESTART, typename T_CLOCK_PRECISION = boost::chrono::microseconds>
+  template<const boost::gregorian::date* T_EPOCHESTART, typename T_CLOCK_PRECISION = boost::chrono::milliseconds>
   class TimeServer : public TimeServerEpoche
   {
   public:

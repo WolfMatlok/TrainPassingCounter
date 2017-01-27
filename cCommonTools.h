@@ -56,6 +56,12 @@ public:
 
 
   static nTimeTypes::MilliSecs GetCurrentTimeStamp();
+  
+  static void writeFile( const std::string& p_strFileName, const std::string& p_oBytes );
+  
+  const static double_t PI;
+  const static double_t TODEG;
+  const static double_t TORAD;
 
 private:
 
