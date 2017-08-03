@@ -41,7 +41,6 @@ OBJECTFILES= \
 	${OBJECTDIR}/TimeServerClock.o \
 	${OBJECTDIR}/cCamera.o \
 	${OBJECTDIR}/cCommonTools.o \
-	${OBJECTDIR}/cDetector.o \
 	${OBJECTDIR}/cGyroServer.o \
 	${OBJECTDIR}/cUnitTest.o \
 	${OBJECTDIR}/main.o
@@ -100,11 +99,6 @@ ${OBJECTDIR}/cCommonTools.o: cCommonTools.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -I/usr/include/eigen3 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/cCommonTools.o cCommonTools.cpp
-
-${OBJECTDIR}/cDetector.o: cDetector.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/eigen3 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/cDetector.o cDetector.cpp
 
 ${OBJECTDIR}/cGyroServer.o: cGyroServer.cpp 
 	${MKDIR} -p ${OBJECTDIR}

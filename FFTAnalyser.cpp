@@ -15,8 +15,8 @@
 
 using namespace helper;
 
-FFTAnalyser::FFTAnalyser(uint32_t p_maxSamples)
-: m_maxSampels(p_maxSamples)
+FFTAnalyser::FFTAnalyser()
+: m_maxSampels(10000)
 , m_samples(m_maxSampels)
 {
 }
@@ -37,12 +37,7 @@ bool FFTAnalyser::add(double p_sample)
 }
 
 void FFTAnalyser::processSamples()
-{
-  if(0==m_samples.size())
-  {
-    return;
-  }
-  
+{  
   auto timepointStartMS = m_samples.begin()->m_timestamp;
   auto timepointEndMS = m_samples.rbegin()->m_timestamp;
   auto deltaTSec = boost::chrono::duration_cast<TimeServerUnix::secAsDouble>(timepointEndMS - timepointStartMS);
@@ -51,37 +46,50 @@ void FFTAnalyser::processSamples()
 
 void FFTAnalyser::processSamples(helper::TimeServerUnix::secAsDouble samplingDuration)
 {
-  if(0==m_samples.size())
-  {
-    return;
-  }
+  auto samplesOverTime = getSamples();
   
-  auto deltaTSec = samplingDuration;
-  auto samplesPerSecond = double(m_samples.size()) / deltaTSec.count();
-  auto maxFrequencyByFFT = samplesPerSecond/2.;
+  auto&& deltaTSec = samplingDuration;
+  auto N = double(samplesOverTime.size());
+  auto samplingFrequencyHZ = N / deltaTSec.count();
+  auto frequencyResolution = samplingFrequencyHZ/N;
+  
 
   Eigen::FFT<double> oFFT;
-  oFFT.SetFlag(Eigen::FFT<double>::Flag::HalfSpectrum);
-
-  std::vector<double> vecOverTime(m_samples.size());
-  auto samples = m_samples.begin();
-  std::generate(vecOverTime.begin(), vecOverTime.end(), [&](){return (*samples++).m_sample;});
+  //oFFT.SetFlag(Eigen::FFT<double>::Flag::HalfSpectrum);
   
-  std::vector< std::complex<double> > vecFrequency;
+  std::vector< std::complex<double> > samplesComplex;
 
-  oFFT.fwd(vecFrequency, vecOverTime);
+  oFFT.fwd(samplesComplex, samplesOverTime);
 
   std::stringstream oStrStr;
   oStrStr << "frequency;fft.magnitude;fft.real;fft.imag" << std::endl;
   oStrStr.imbue(std::locale(""));
 
-  auto iFrequency = 0;
-  for (auto oItComplex = vecFrequency.begin(); oItComplex != vecFrequency.end(); ++oItComplex)
+  auto idxAmplitudeSpectrum = getFrequencyIndex(N, frequencyResolution);
+  auto idxAmplitudeSpectrumIt = idxAmplitudeSpectrum.begin();
+  for (auto oItComplex = samplesComplex.begin(); oItComplex != samplesComplex.end(); ++oItComplex)
   {
-    oStrStr << double(iFrequency++) / maxFrequencyByFFT << ";" << std::abs(*oItComplex) << ";" << oItComplex->real() << ";" << oItComplex->imag() << std::endl;
+    oStrStr << *(idxAmplitudeSpectrumIt++) << ";" << std::abs(*oItComplex) << ";" << oItComplex->real() << ";" << oItComplex->imag() << std::endl;
   }
 
-  cCommonTools::writeFile(STMSTR("/home/pi/images/fftdata." << samplesPerSecond << ".csv"), oStrStr.str());
+  cCommonTools::writeFile(STMSTR("/home/pi/images/fftdata." << samplingFrequencyHZ << ".csv"), oStrStr.str());
   //LOG_TRACE("written to: /home/pi/images/fftdata." << std::setw(10) << std::setfill('0') << ".csv");
 
+}
+
+std::vector<double> FFTAnalyser::getSamples()
+{
+  std::vector<double> vecOverTime(m_samples.size());
+  auto samplesIt = m_samples.begin();
+  std::generate(vecOverTime.begin(), vecOverTime.end(), [&](){return (*samplesIt++).m_sample;});
+  return std::move(vecOverTime);
+}
+
+std::vector<double> FFTAnalyser::getFrequencyIndex(double N, double frequencyResolution)
+{
+  std::vector<double> idxAmplitudeSpectrum;
+  for(double idx = -(N/2); idx<=(N/2)-1; idx++)
+    idxAmplitudeSpectrum.push_back(idx*frequencyResolution);
+  
+  return std::move(idxAmplitudeSpectrum);
 }

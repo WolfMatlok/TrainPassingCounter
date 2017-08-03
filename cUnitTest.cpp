@@ -137,13 +137,14 @@ void cUnitTest::CheckFFT()
   uint32_t N = 360;
   std::vector<double> vecOverTime(N);
   int iDegree = 0.0;
-  auto funcGenerating = [&](){return std::cos(double(iDegree++) * cCommonTools::TORAD);};
-  std::generate(vecOverTime.begin(), vecOverTime.end(), funcGenerating);
+  std::generate(vecOverTime.begin(), vecOverTime.end(), [&](){
+    return std::cos(2.*cCommonTools::PI*10.*double(iDegree++));
+  });
 
-  FFTAnalyser analyserFFT(N);
+  FFTAnalyser analyserFFT;
   std::for_each(vecOverTime.begin(), vecOverTime.end(), [&](double sample){analyserFFT.add(sample);});
   
-  analyserFFT.processSamples(helper::TimeServerUnix::secAsDouble(1.0));
+  analyserFFT.processSamples(helper::TimeServerUnix::secAsDouble(2.0));
   
   return;
 }
