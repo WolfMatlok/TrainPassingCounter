@@ -6,7 +6,9 @@
  */
 
 #include "cCommonTools.h"
+#include <iostream>
 #include <eigen3/unsupported/Eigen/FFT>
+#include <Eigen/Dense>
 #include <iosfwd>
 #include <sstream>
 #include <bits/basic_ios.h>
@@ -37,7 +39,7 @@ bool FFTAnalyser::add(double p_sample)
 }
 
 void FFTAnalyser::processSamples()
-{  
+{
   auto timepointStartMS = m_samples.begin()->m_timestamp;
   auto timepointEndMS = m_samples.rbegin()->m_timestamp;
   auto deltaTSec = boost::chrono::duration_cast<TimeServerUnix::secAsDouble>(timepointEndMS - timepointStartMS);
@@ -47,33 +49,50 @@ void FFTAnalyser::processSamples()
 void FFTAnalyser::processSamples(helper::TimeServerUnix::secAsDouble samplingDuration)
 {
   auto samplesOverTime = getSamples();
-  
   auto&& deltaTSec = samplingDuration;
   auto N = double(samplesOverTime.size());
-  auto samplingFrequencyHZ = N / deltaTSec.count();
-  auto frequencyResolution = samplingFrequencyHZ/N;
-  
+  auto samplingRate = N / deltaTSec.count();
+  auto frequencyResolution = samplingRate / N;
+  Eigen::FFT<double>::Index nFFT = 1024;
+
 
   Eigen::FFT<double> oFFT;
-  //oFFT.SetFlag(Eigen::FFT<double>::Flag::HalfSpectrum);
-  
+  oFFT.SetFlag(Eigen::FFT<double>::Flag::HalfSpectrum);
+
+
   std::vector< std::complex<double> > samplesComplex;
+  samplesComplex.resize( (samplesOverTime.size()>>1)+1 );
 
-  oFFT.fwd(samplesComplex, samplesOverTime);
+  oFFT.fwd(&samplesComplex[0], &samplesOverTime[0], nFFT);
 
-  std::stringstream oStrStr;
-  oStrStr << "frequency;fft.magnitude;fft.real;fft.imag" << std::endl;
-  oStrStr.imbue(std::locale(""));
-
-  auto idxAmplitudeSpectrum = getFrequencyIndex(N, frequencyResolution);
-  auto idxAmplitudeSpectrumIt = idxAmplitudeSpectrum.begin();
-  for (auto oItComplex = samplesComplex.begin(); oItComplex != samplesComplex.end(); ++oItComplex)
   {
-    oStrStr << *(idxAmplitudeSpectrumIt++) << ";" << std::abs(*oItComplex) << ";" << oItComplex->real() << ";" << oItComplex->imag() << std::endl;
+    std::stringstream oStrStr;
+    FORMATSTREAM(oStrStr);
+    oStrStr << "frequency;fft.magnitude;fft.real;fft.imag" << std::endl;
+
+    double dFFTIndex = 0;
+    for (auto oItComplex = samplesComplex.begin(); oItComplex != samplesComplex.end(); ++oItComplex)
+    {
+      auto frequency2Print = dFFTIndex * samplingRate / double(nFFT);
+      if(frequency2Print>=500.)
+        break;
+      oStrStr << std::fixed << dFFTIndex * samplingRate / double(nFFT) << ";" << std::abs(*oItComplex) << ";" << oItComplex->real() << ";" << oItComplex->imag() << std::endl;      
+      dFFTIndex+=1.;
+    }
+    cCommonTools::writeFile(STMSTR("/home/pi/images/fftdata." << samplingRate << ".csv"), oStrStr.str());
   }
 
-  cCommonTools::writeFile(STMSTR("/home/pi/images/fftdata." << samplingFrequencyHZ << ".csv"), oStrStr.str());
-  //LOG_TRACE("written to: /home/pi/images/fftdata." << std::setw(10) << std::setfill('0') << ".csv");
+
+  {
+    std::stringstream oStrStr;
+    int idx = 0;
+    oStrStr << "idx;singal over time" << std::endl;
+    std::for_each(samplesOverTime.begin(), samplesOverTime.end(), [&](double sample)
+    {
+      oStrStr << idx++ << ";" << sample << std::endl;
+    });
+    cCommonTools::writeFile(STMSTR("/home/pi/images/signal.csv"), oStrStr.str());
+  }
 
 }
 
@@ -81,15 +100,18 @@ std::vector<double> FFTAnalyser::getSamples()
 {
   std::vector<double> vecOverTime(m_samples.size());
   auto samplesIt = m_samples.begin();
-  std::generate(vecOverTime.begin(), vecOverTime.end(), [&](){return (*samplesIt++).m_sample;});
+  std::generate(vecOverTime.begin(), vecOverTime.end(), [&]()
+  {
+    return (*samplesIt++).m_sample;
+  });
   return std::move(vecOverTime);
 }
 
 std::vector<double> FFTAnalyser::getFrequencyIndex(double N, double frequencyResolution)
 {
   std::vector<double> idxAmplitudeSpectrum;
-  for(double idx = -(N/2); idx<=(N/2)-1; idx++)
-    idxAmplitudeSpectrum.push_back(idx*frequencyResolution);
-  
+  for (double idx = -(N / 2); idx <= (N / 2) - 1; idx++)
+    idxAmplitudeSpectrum.push_back(idx * frequencyResolution);
+
   return std::move(idxAmplitudeSpectrum);
 }

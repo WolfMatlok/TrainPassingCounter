@@ -21,10 +21,10 @@ void cUnitTest::DoAllTests()
 {
   CheckFFT();
   return;
-  CheckTimeServer();
-  CheckGyroSensor();
-  CheckFPSCamera();
-  CheckDifference();
+  //CheckTimeServer();
+  //CheckGyroSensor();
+  //CheckFPSCamera();
+  //CheckDifference();
 }
 
 void cUnitTest::CheckFPSCamera()
@@ -134,17 +134,20 @@ void cUnitTest::CheckTimeServer()
 
 void cUnitTest::CheckFFT()
 {
-  uint32_t N = 360;
+  double N = 723.;
   std::vector<double> vecOverTime(N);
-  int iDegree = 0.0;
+  double dDegree = 0.0;
   std::generate(vecOverTime.begin(), vecOverTime.end(), [&](){
-    return std::cos(2.*cCommonTools::PI*10.*double(iDegree++));
+    double ret =   10 * std::sin( 7   * (360.*(dDegree/N)/180.) * cCommonTools::PI ) 
+               +    5 * std::sin( 100 * (360.*(dDegree/N)/180.) * cCommonTools::PI );
+    dDegree+=1.0;
+    return ret;
   });
 
   FFTAnalyser analyserFFT;
-  std::for_each(vecOverTime.begin(), vecOverTime.end(), [&](double sample){analyserFFT.add(sample);});
+  std::for_each(vecOverTime.begin(), vecOverTime.end(), [&](double sample){analyserFFT.add(sample); cCommonTools::Sleep(13);});
   
-  analyserFFT.processSamples(helper::TimeServerUnix::secAsDouble(2.0));
+  analyserFFT.processSamples();
   
   return;
 }

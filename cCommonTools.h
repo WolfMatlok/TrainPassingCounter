@@ -14,6 +14,7 @@
 #include <string>
 #include <exception>
 #include <numeric>
+#include <locale.h>
 
 #include <boost/date_time/gregorian/gregorian.hpp>
 #include <boost/circular_buffer.hpp>
@@ -33,6 +34,22 @@
 #define LOG_WARNING(STRMSG)         std::cout << "WARNING: " << LOGSTR(__FUNCTION__, STRMSG) << std::endl
 #define LOG_DEBUG(STRMSG)           std::cout << "  DEBUG: " << LOGSTR(__FUNCTION__, STRMSG) << std::endl
 #define LOG_TRACE(STRMSG)           std::cout << "  TRACE: " << LOGSTR(__FUNCTION__, STRMSG) << std::endl
+
+template <class charT>
+struct no_separator : public std::numpunct<charT> {    
+protected:
+    virtual std::string do_grouping() const
+    {
+      return "\000"; // groups of 0 (disable)
+    }
+    
+    charT do_decimal_point()   const 
+    {
+      return ',';
+    }
+};
+
+#define FORMATSTREAM [](std::iostream& streamObject){ streamObject.imbue( std::locale(streamObject.getloc(),  new no_separator<char>()) ); }
 
 namespace nTimeTypes
 {
