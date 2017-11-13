@@ -53,21 +53,20 @@ void FFTAnalyser::processSamples(helper::TimeServerUnix::secAsDouble samplingDur
   auto N = double(samplesOverTime.size());
   auto samplingRate = N / deltaTSec.count();
   auto frequencyResolution = samplingRate / N;
-  Eigen::FFT<double>::Index nFFT = 1024;
+  Eigen::FFT<double>::Index nFFT = 256;
 
 
   Eigen::FFT<double> oFFT;
   oFFT.SetFlag(Eigen::FFT<double>::Flag::HalfSpectrum);
 
-
   std::vector< std::complex<double> > samplesComplex;
-  samplesComplex.resize( (samplesOverTime.size()>>1)+1 );
+  samplesComplex.resize( 256 );
 
   oFFT.fwd(&samplesComplex[0], &samplesOverTime[0], nFFT);
 
   {
     std::stringstream oStrStr;
-    FORMATSTREAM(oStrStr);
+    FORMATSTREAMFORCSV(oStrStr);
     oStrStr << "frequency;fft.magnitude;fft.real;fft.imag" << std::endl;
 
     double dFFTIndex = 0;
@@ -84,7 +83,7 @@ void FFTAnalyser::processSamples(helper::TimeServerUnix::secAsDouble samplingDur
 
 
   {
-    std::stringstream oStrStr;
+    std::stringstream oStrStr; FORMATSTREAMFORCSV(oStrStr);
     int idx = 0;
     oStrStr << "idx;singal over time" << std::endl;
     std::for_each(samplesOverTime.begin(), samplesOverTime.end(), [&](double sample)

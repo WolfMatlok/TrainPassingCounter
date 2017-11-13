@@ -26,8 +26,19 @@ namespace helper
     static const boost::gregorian::date EPOCHE_START_1601_1_1;
   };
 
-  template<const boost::gregorian::date* T_EPOCHESTART, typename T_CLOCK_PRECISION = boost::chrono::milliseconds>
-  class TimeServer : public TimeServerEpoche
+	/** Class to define TimeServer with userdefined clocks.
+	*   timestamp: amount of time counted in given precision
+	*   duration: boost duration-object related to given precision
+	*   timepoint: boost duration, with corresposnding clock_type
+	* @reference http://www.boost.org/doc/libs/1_63_0/doc/html/chrono.html
+	* @author wmk
+	* @date 2017/02/21
+	*/
+	template<const boost::gregorian::date* T_EPOCHESTART
+		, typename T_CLOCK_PRECISION = boost::chrono::milliseconds
+		, template <typename> class T_CLOCK_TYPE = TimeServerClock
+	>
+	class TimeServer : public TimeServerEpoche
   {
   public:
     typedef boost::chrono::microseconds us;
@@ -36,8 +47,12 @@ namespace helper
     typedef boost::chrono::duration<double> secAsDouble;
     typedef boost::chrono::duration<uint64_t, boost::ratio_multiply<boost::chrono::hours::period, boost::ratio < 24 >> > days;
     typedef T_CLOCK_PRECISION t_clock_precision;
-    typedef TimeServerClock<TimeServer<T_EPOCHESTART, T_CLOCK_PRECISION>> clock_type;
-    typedef typename TimeServerClock<TimeServer<T_EPOCHESTART, T_CLOCK_PRECISION>>::time_point time_point;
+    typedef typename T_CLOCK_PRECISION::rep timestamp;
+
+
+    typedef T_CLOCK_TYPE<TimeServer<T_EPOCHESTART, T_CLOCK_PRECISION>> clock_type;
+    typedef typename T_CLOCK_TYPE<TimeServer<T_EPOCHESTART, T_CLOCK_PRECISION>>::time_point time_point;
+
 
     TimeServer()
     {
@@ -85,8 +100,8 @@ namespace helper
 
   };
 
-  template <const boost::gregorian::date* T_EPOCHESTART, typename T_CLOCK_PRECISION>
-  const boost::gregorian::date& TimeServer<T_EPOCHESTART, T_CLOCK_PRECISION>::EPOCHE_START = *T_EPOCHESTART;
+	template <const boost::gregorian::date* T_EPOCHESTART, typename T_CLOCK_PRECISION, template <typename> class T_CLOCK_TYPE>
+	const boost::gregorian::date& TimeServer<T_EPOCHESTART, T_CLOCK_PRECISION, T_CLOCK_TYPE>::EPOCHE_START = *T_EPOCHESTART;
 
   typedef TimeServer<&TimeServerEpoche::EPOCHE_START_1970_1_1> TimeServerUnix;
   typedef TimeServer<&TimeServerEpoche::EPOCHE_START_1601_1_1> TimeServerNT;

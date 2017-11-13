@@ -49,7 +49,7 @@ protected:
     }
 };
 
-#define FORMATSTREAM [](std::iostream& streamObject){ streamObject.imbue( std::locale(streamObject.getloc(),  new no_separator<char>()) ); }
+#define FORMATSTREAMFORCSV [](std::iostream& streamObject){ streamObject.imbue( std::locale(streamObject.getloc(),  new no_separator<char>()) ); }
 
 namespace nTimeTypes
 {
@@ -79,9 +79,18 @@ public:
   const static double_t PI;
   const static double_t TODEG;
   const static double_t TORAD;
+  
+  static char ROTATECURSOR()
+  { 
+    if(0==g_RotationCounter){g_RotationCounter=1; return '|';}
+    if(1==g_RotationCounter){g_RotationCounter=2; return '/';}
+    if(2==g_RotationCounter){g_RotationCounter=3; return '-';}
+    if(3==g_RotationCounter){g_RotationCounter=0; return '\\';}
+    return '-';
+  }
 
 private:
-
+  static int g_RotationCounter;
 };
 
 struct AVGDEVCOUNTER2

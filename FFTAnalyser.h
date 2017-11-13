@@ -17,7 +17,7 @@ public:
 
   FFTAnalyser();
 
-  virtual ~FFTAnalyser();;
+  virtual ~FFTAnalyser();
 
   bool add(double p_sample, helper::TimeServerUnix::ms&& p_timestamp);
   bool add(double p_sample);

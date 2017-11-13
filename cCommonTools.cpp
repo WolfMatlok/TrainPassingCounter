@@ -27,6 +27,7 @@ const boost::gregorian::date cCommonTools::m_oEpocheStart = boost::gregorian::da
 const double_t cCommonTools::PI = 3.14159265359;
 const double_t cCommonTools::TORAD = cCommonTools::PI / 180.;
 const double_t cCommonTools::TODEG = 180. / cCommonTools::PI;
+int cCommonTools::g_RotationCounter = 0;
 
 
 int cCommonTools::_kbhit()

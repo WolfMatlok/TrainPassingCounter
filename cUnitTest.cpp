@@ -19,10 +19,10 @@ using namespace std;
 
 void cUnitTest::DoAllTests()
 {
-  CheckFFT();
-  return;
+  //CheckFFT();
+  //return;
   //CheckTimeServer();
-  //CheckGyroSensor();
+  CheckGyroSensor();
   //CheckFPSCamera();
   //CheckDifference();
 }
@@ -134,18 +134,31 @@ void cUnitTest::CheckTimeServer()
 
 void cUnitTest::CheckFFT()
 {
-  double N = 723.;
+  double N = 15000., NCounter = 0.;
+  double samplingPeriodMS = 10.;
+  double samplingRate = 1000./samplingPeriodMS;
   std::vector<double> vecOverTime(N);
-  double dDegree = 0.0;
+  
+  double dPeriodPercent = 0.0;
   std::generate(vecOverTime.begin(), vecOverTime.end(), [&](){
-    double ret =   10 * std::sin( 7   * (360.*(dDegree/N)/180.) * cCommonTools::PI ) 
-               +    5 * std::sin( 100 * (360.*(dDegree/N)/180.) * cCommonTools::PI );
-    dDegree+=1.0;
+    
+    double ret =   10 * std::sin( 7  * dPeriodPercent * (2.*cCommonTools::PI) ) 
+               /*+    5 * std::sin( 13 * dPeriodPercent * (2.*cCommonTools::PI) )*/;
+    
+    dPeriodPercent+=(samplingPeriodMS/1000.);
+    
+    if(dPeriodPercent>100.)
+      dPeriodPercent = 0.;
+    
     return ret;
   });
 
   FFTAnalyser analyserFFT;
-  std::for_each(vecOverTime.begin(), vecOverTime.end(), [&](double sample){analyserFFT.add(sample); cCommonTools::Sleep(13);});
+  std::for_each(vecOverTime.begin(), vecOverTime.end(), [&](double sample){
+    analyserFFT.add(sample);
+    cCommonTools::Sleep(samplingPeriodMS);
+    std::cout << "Generating sample data for unittest " << FF(6,2,'0') << 100.*(NCounter++/N)  << "% " <<  cCommonTools::ROTATECURSOR() << "\r";
+  });
   
   analyserFFT.processSamples();
   
