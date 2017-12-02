@@ -79,7 +79,6 @@ nTimeTypes::MilliSecs cCommonTools::GetCurrentTimeStamp()
 
 }
 
-
 void cCommonTools::writeFile( const std::string& p_strFileName, const std::string& p_oBytes )
 {
   std::ofstream out(p_strFileName, std::ios::out | std::ios::binary);

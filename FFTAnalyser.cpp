@@ -18,8 +18,9 @@
 using namespace helper;
 
 FFTAnalyser::FFTAnalyser()
-: m_maxSampels(10000)
+: m_maxSampels(1000)
 , m_samples(m_maxSampels)
+, m_counterProcessSamples(0)
 {
 }
 
@@ -73,12 +74,12 @@ void FFTAnalyser::processSamples(helper::TimeServerUnix::secAsDouble samplingDur
     for (auto oItComplex = samplesComplex.begin(); oItComplex != samplesComplex.end(); ++oItComplex)
     {
       auto frequency2Print = dFFTIndex * samplingRate / double(nFFT);
-      if(frequency2Print>=500.)
+      if(frequency2Print>=51.)
         break;
       oStrStr << std::fixed << dFFTIndex * samplingRate / double(nFFT) << ";" << std::abs(*oItComplex) << ";" << oItComplex->real() << ";" << oItComplex->imag() << std::endl;      
       dFFTIndex+=1.;
     }
-    cCommonTools::writeFile(STMSTR("/home/pi/images/fftdata." << samplingRate << ".csv"), oStrStr.str());
+    cCommonTools::writeFile(STMSTR("/home/pi/images/fftdata."<< FI(8,'0') << m_counterProcessSamples <<".csv"), oStrStr.str());
   }
 
 
@@ -90,8 +91,10 @@ void FFTAnalyser::processSamples(helper::TimeServerUnix::secAsDouble samplingDur
     {
       oStrStr << idx++ << ";" << sample << std::endl;
     });
-    cCommonTools::writeFile(STMSTR("/home/pi/images/signal.csv"), oStrStr.str());
+    cCommonTools::writeFile(STMSTR("/home/pi/images/signal."<< FI(8,'0') << m_counterProcessSamples <<".csv"), oStrStr.str());
   }
+  
+  m_counterProcessSamples++;
 
 }
 

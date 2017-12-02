@@ -119,7 +119,7 @@ struct AVGDEVCOUNTER2
 /**
  * Uses a defined size
  */
-template<typename PDT = double>
+template<typename ADT = double>
 struct AVGDEVCOUNTER3
 {
   AVGDEVCOUNTER3(unsigned int p_uiMaxSize)
@@ -131,38 +131,76 @@ struct AVGDEVCOUNTER3
   
   ~AVGDEVCOUNTER3(){};
   
-  void SetValue(PDT p_dNewValue)
+  void SetValue(ADT p_dNewValue)
   {
     m_oBufferCircular.push_back(p_dNewValue);
     m_oBufferCircularSquare.push_back(p_dNewValue*p_dNewValue);
   };
   
-  PDT GetAvg()
+  ADT GetAvg()
   {
-    PDT dSum = GetSum();
-    PDT dN = GetN();
+    ADT dSum = GetSum();
+    ADT dN = GetN();
     return dSum/dN;
   };
   
-  PDT GetStdDev()
+  ADT GetStdDev()
   {
-    PDT m_dSum = GetSum();
-    PDT m_dSumSquare = GetSumSquare();
-    PDT m_dN = GetN();
+    ADT m_dSum = GetSum();
+    ADT m_dSumSquare = GetSumSquare();
+    ADT m_dN = GetN();
     return sqrt( (m_dSumSquare/m_dN) - ((m_dSum*m_dSum)/(m_dN*m_dN)) );
   };
   
-  PDT GetSum(){return std::accumulate(m_oBufferCircular.begin(), m_oBufferCircular.end(), 0.);};  
-  PDT GetSumSquare(){return std::accumulate(m_oBufferCircularSquare.begin(), m_oBufferCircularSquare.end(), 0.);};
+  ADT GetSum(){return std::accumulate(m_oBufferCircular.begin(), m_oBufferCircular.end(), 0.);};
+  ADT GetSumSquare(){return std::accumulate(m_oBufferCircularSquare.begin(), m_oBufferCircularSquare.end(), 0.);};
   
   void Reset(){ m_oBufferCircular.clear(); m_oBufferCircularSquare.clear(); };
   
-  PDT GetN(){return m_oBufferCircular.size();};
+  ADT GetN(){return m_oBufferCircular.size();};
   
   bool Full(){return m_oBufferCircular.full();};
   
-  boost::circular_buffer<PDT> m_oBufferCircular;
-  boost::circular_buffer<PDT> m_oBufferCircularSquare;
+  boost::circular_buffer<ADT> m_oBufferCircular;
+  boost::circular_buffer<ADT> m_oBufferCircularSquare;
+};
+
+/** Stores a new value and saves the last value; the difference is callable
+* @author wmk
+* @date 2008/12/10
+* @see http://www.tm-mathe.de/Themen/html/funnumdiff.html
+*/ 
+template<class ADT = double> //ADT --> arimtehic datatypes
+struct DIFFCOUNTER
+{
+  DIFFCOUNTER():m_values{0,0,0},m_counter(0)
+  {    
+  };
+  
+  ~DIFFCOUNTER(){};
+
+  void SetValue(ADT p_valueNew)
+  {
+    m_values[m_counter++%3] = p_valueNew;
+  };
+
+  ADT GetDiff()
+  {
+    ADT deltaValue = 0;
+    if( 0 == m_counter%3)
+      deltaValue = m_values[2] - m_values[0];
+    
+    if( 1 == m_counter%3 )
+      deltaValue = m_values[0] - m_values[1];
+    
+    if( 2 == m_counter%3 )
+      deltaValue = m_values[1] - m_values[2];
+    
+    return deltaValue;
+  };
+
+  std::vector<ADT> m_values;
+  uint8_t m_counter;
 };
 
 #endif	/* CCOMMONTOOLS_H */

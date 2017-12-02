@@ -10,17 +10,26 @@ helper::Age::~Age()
 
 }
 
-helper::TimeServerUnix::secAsDouble helper::Age::GetAgeS()
+helper::TimeServerUnix::secAsDouble helper::Age::GetAgeS(bool reset /*= false*/)
 {
-	return boost::chrono::duration_cast<helper::TimeServerUnix::secAsDouble>(GetAgeMS());
+	return boost::chrono::duration_cast<helper::TimeServerUnix::secAsDouble>(GetAgeMS(reset));
 }
 
-helper::TimeServerUnix::us helper::Age::GetAgeUS()
+helper::TimeServerUnix::us helper::Age::GetAgeUS(bool reset /*= false*/)
 {
-	return helper::TimeServerUnix::getTimestampCurrent() - m_creationTimeStamp;
+  if(reset)
+  {
+    auto currentAge = helper::TimeServerUnix::getTimestampCurrent() - m_creationTimeStamp;
+    this->reset();
+    return currentAge;
+  }
+  else
+  {
+    return helper::TimeServerUnix::getTimestampCurrent() - m_creationTimeStamp;
+  }
 }
 
-helper::TimeServerUnix::ms helper::Age::GetAgeMS()
+helper::TimeServerUnix::ms helper::Age::GetAgeMS(bool reset /*= false*/)
 {
-  return boost::chrono::duration_cast<helper::TimeServerUnix::ms>(GetAgeUS());
+  return boost::chrono::duration_cast<helper::TimeServerUnix::ms>(GetAgeUS(reset));
 }

@@ -47,5 +47,5 @@ private:
    */
   std::vector<double> getFrequencyIndex(double N, double frequencyResolution);
   
-
+  uint32_t m_counterProcessSamples;
 };

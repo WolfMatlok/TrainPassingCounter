@@ -9,10 +9,12 @@ class Age
 public:
   explicit Age(helper::TimeServerUnix::us p_creationTime = helper::TimeServerUnix::getTimestampCurrent());
   virtual ~Age();
+  
+  void reset(){m_creationTimeStamp = helper::TimeServerUnix::getTimestampCurrent();};
 
-	TimeServerUnix::us GetAgeUS();
-  TimeServerUnix::ms GetAgeMS();
-	TimeServerUnix::secAsDouble GetAgeS();
+	TimeServerUnix::us GetAgeUS(bool reset = false);
+  TimeServerUnix::ms GetAgeMS(bool reset = false);
+	TimeServerUnix::secAsDouble GetAgeS(bool reset = false);
 
   /** milliseconds
   * @author wmk

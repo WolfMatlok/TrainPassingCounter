@@ -10,6 +10,17 @@
 #include <tuple>
 #include "cCommonTools.h"
 
+namespace GyroServer
+{
+  const uint8_t X{0}, Y{1}, Z{2};
+  struct Acceleration
+  {
+    double X;
+    double Y;
+    double Z;
+  };
+}
+
 class cGyroServer
 {
 public:
@@ -17,6 +28,8 @@ public:
   virtual ~cGyroServer();
   
   void processData();
+  
+  GyroServer::Acceleration getAcceleration();
   
 private:
   AVGDEVCOUNTER3<> m_oAvgTemp;
@@ -41,5 +54,7 @@ private:
   double getDist(double p_dA,double p_dB);  
   
   double getGyroFactoryTrimValue();
+  
+  const double m_g = 9.81274;
   
 };

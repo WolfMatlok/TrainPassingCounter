@@ -14,17 +14,19 @@
 #include "TimeServer.h"
 #include "TimeServerClock.h"
 #include "FFTAnalyser.h"
+#include "Age.h"
+#include "MonitorSeismograph.h"
 
 using namespace std;
 
 void cUnitTest::DoAllTests()
 {
   //CheckFFT();
-  //return;
   //CheckTimeServer();
-  CheckGyroSensor();
+  //CheckGyroSensor();
   //CheckFPSCamera();
   //CheckDifference();
+  CheckGyroHandler();
 }
 
 void cUnitTest::CheckFPSCamera()
@@ -134,33 +136,57 @@ void cUnitTest::CheckTimeServer()
 
 void cUnitTest::CheckFFT()
 {
-  double N = 15000., NCounter = 0.;
-  double samplingPeriodMS = 10.;
-  double samplingRate = 1000./samplingPeriodMS;
+  double N = 1000., NCounter = 0.;
+  double samplingRateHZ = 100.;
+  double samplingPeriodMS = 1000./samplingRateHZ;
   std::vector<double> vecOverTime(N);
   
   double dPeriodPercent = 0.0;
   std::generate(vecOverTime.begin(), vecOverTime.end(), [&](){
     
-    double ret =   10 * std::sin( 7  * dPeriodPercent * (2.*cCommonTools::PI) ) 
-               /*+    5 * std::sin( 13 * dPeriodPercent * (2.*cCommonTools::PI) )*/;
+    double ret =    std::cos(  3. * dPeriodPercent * (2.*cCommonTools::PI) )
+                  + std::cos(  5. * dPeriodPercent * (2.*cCommonTools::PI) )
+                  + std::cos( 10. * dPeriodPercent * (2.*cCommonTools::PI) )
+                  + std::cos( 20. * dPeriodPercent * (2.*cCommonTools::PI) )
+                  + std::cos( 30. * dPeriodPercent * (2.*cCommonTools::PI) )
+                  + std::cos( 40. * dPeriodPercent * (2.*cCommonTools::PI) )
+                  + std::cos( 50. * dPeriodPercent * (2.*cCommonTools::PI) );
     
-    dPeriodPercent+=(samplingPeriodMS/1000.);
+    dPeriodPercent+=(samplingPeriodMS/1000.);   
     
-    if(dPeriodPercent>100.)
-      dPeriodPercent = 0.;
+    if(dPeriodPercent >= 100.)
+      dPeriodPercent = 0.;    
     
     return ret;
   });
 
   FFTAnalyser analyserFFT;
-  std::for_each(vecOverTime.begin(), vecOverTime.end(), [&](double sample){
+  AVGDEVCOUNTER3<> avgOfCycle(vecOverTime.size());
+  std::for_each(vecOverTime.begin(), vecOverTime.end(), [&](double sample)
+  {
+    helper::Age ageOfCycle;
     analyserFFT.add(sample);
     cCommonTools::Sleep(samplingPeriodMS);
     std::cout << "Generating sample data for unittest " << FF(6,2,'0') << 100.*(NCounter++/N)  << "% " <<  cCommonTools::ROTATECURSOR() << "\r";
+    avgOfCycle.SetValue( ageOfCycle.GetAgeMS(true).count() );
   });
+  
+  std::cout << std::endl << "avgSamplingRate:" << avgOfCycle.GetAvg() << " stddevSamplingrate:" << avgOfCycle.GetStdDev() << std::endl;
   
   analyserFFT.processSamples();
   
   return;
+}
+
+void cUnitTest::CheckGyroHandler()
+{
+  MonitorSeismograph monSeismograph;
+  
+  helper::Age ageTest;
+  helper::Age ageCylcle;
+  while(ageTest.GetAgeS().count() <= 10 /*43200*/) //12 Stunden
+  {
+    monSeismograph.processData();
+    cCommonTools::Sleep( 10 - ageCylcle.GetAgeMS(true).count());
+  }
 }

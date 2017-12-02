@@ -25,6 +25,8 @@ public:
   static void CheckTimeServer();
   
   static void CheckFFT();
+  
+  static void CheckGyroHandler();
 private:
 
 };

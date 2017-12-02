@@ -6,6 +6,7 @@
                    projectFiles="true">
       <itemPath>Age.h</itemPath>
       <itemPath>FFTAnalyser.h</itemPath>
+      <itemPath>MonitorSeismograph.h</itemPath>
       <itemPath>TimeServer.h</itemPath>
       <itemPath>TimeServerClock.h</itemPath>
       <itemPath>cCamera.h</itemPath>
@@ -22,6 +23,7 @@
                    projectFiles="true">
       <itemPath>Age.cpp</itemPath>
       <itemPath>FFTAnalyser.cpp</itemPath>
+      <itemPath>MonitorSeismograph.cpp</itemPath>
       <itemPath>TimeServer.cpp</itemPath>
       <itemPath>TimeServerClock.cpp</itemPath>
       <itemPath>cCamera.cpp</itemPath>
@@ -66,6 +68,10 @@
       <item path="FFTAnalyser.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="FFTAnalyser.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="MonitorSeismograph.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="MonitorSeismograph.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="TimeServer.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -125,6 +131,10 @@
       <item path="FFTAnalyser.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="FFTAnalyser.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="MonitorSeismograph.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="MonitorSeismograph.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="TimeServer.cpp" ex="false" tool="1" flavor2="0">
       </item>
