@@ -160,7 +160,7 @@ void cUnitTest::CheckFFT()
     return ret;
   });
 
-  FFTAnalyser analyserFFT;
+  FFTAnalyser analyserFFT(FFTAnalyserResultHandlerPtr(new FFTAnalyserResultHandler("UnitTest")));
   AVGDEVCOUNTER3<> avgOfCycle(vecOverTime.size());
   std::for_each(vecOverTime.begin(), vecOverTime.end(), [&](double sample)
   {
@@ -184,7 +184,7 @@ void cUnitTest::CheckGyroHandler()
   
   helper::Age ageTest;
   helper::Age ageCylcle;
-  while(ageTest.GetAgeS().count() <= 10 /*43200*/) //12 Stunden
+  while(ageTest.GetAgeS().count() <= 60 /*43200*/) //12 Stunden
   {
     monSeismograph.processData();
     cCommonTools::Sleep( 10 - ageCylcle.GetAgeMS(true).count());

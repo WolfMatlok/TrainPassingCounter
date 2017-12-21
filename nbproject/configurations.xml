@@ -6,6 +6,8 @@
                    projectFiles="true">
       <itemPath>Age.h</itemPath>
       <itemPath>FFTAnalyser.h</itemPath>
+      <itemPath>FFTAnalyserResultHandler.h</itemPath>
+      <itemPath>FFTAnalyserResultHandlerBitmap.h</itemPath>
       <itemPath>MonitorSeismograph.h</itemPath>
       <itemPath>TimeServer.h</itemPath>
       <itemPath>TimeServerClock.h</itemPath>
@@ -23,6 +25,7 @@
                    projectFiles="true">
       <itemPath>Age.cpp</itemPath>
       <itemPath>FFTAnalyser.cpp</itemPath>
+      <itemPath>FFTAnalyserResultHandlerBitmap.cpp</itemPath>
       <itemPath>MonitorSeismograph.cpp</itemPath>
       <itemPath>TimeServer.cpp</itemPath>
       <itemPath>TimeServerClock.cpp</itemPath>
@@ -69,6 +72,12 @@
       </item>
       <item path="FFTAnalyser.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="FFTAnalyserResultHandler.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="FFTAnalyserResultHandlerBitmap.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="FFTAnalyserResultHandlerBitmap.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="MonitorSeismograph.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="MonitorSeismograph.h" ex="false" tool="3" flavor2="0">
@@ -112,6 +121,7 @@
         </cTool>
         <ccTool>
           <developmentMode>5</developmentMode>
+          <commandlineTool>g++</commandlineTool>
           <incDir>
             <pElem>/usr/include/eigen3</pElem>
           </incDir>
@@ -131,6 +141,12 @@
       <item path="FFTAnalyser.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="FFTAnalyser.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="FFTAnalyserResultHandler.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="FFTAnalyserResultHandlerBitmap.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="FFTAnalyserResultHandlerBitmap.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="MonitorSeismograph.cpp" ex="false" tool="1" flavor2="0">
       </item>

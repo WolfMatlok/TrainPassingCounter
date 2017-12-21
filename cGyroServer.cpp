@@ -61,7 +61,7 @@ void cGyroServer::processData()
 
   std::cout << "\r TemperatureAvg:" << FF(3, 3, '0') << m_oAvgTemp.GetAvg() << " AVGX:" << m_oAvgX.GetAvg() << " AVGY:" << m_oAvgY.GetAvg() << " ACCELX:" << m_oAvgAccelX.GetAvg() << " ACCELY:" << m_oAvgAccelY.GetAvg() << " ACCELZ:" << m_oAvgAccelZ.GetAvg() << FF(5, 4, '0') << " GyroX:" << m_oAvgGyroScopeX.GetAvg() << " GyroY:" << m_oAvgGyroScopeY.GetAvg() << " GyroZ:" << m_oAvgGyroScopeZ.GetAvg() << std::flush;
 
-  cCommonTools::Sleep(50);
+  //cCommonTools::Sleep(50);
 }
 
 GyroServer::Acceleration cGyroServer::getAcceleration()

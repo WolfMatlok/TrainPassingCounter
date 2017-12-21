@@ -37,6 +37,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/Age.o \
 	${OBJECTDIR}/FFTAnalyser.o \
+	${OBJECTDIR}/FFTAnalyserResultHandlerBitmap.o \
 	${OBJECTDIR}/MonitorSeismograph.o \
 	${OBJECTDIR}/TimeServer.o \
 	${OBJECTDIR}/TimeServerClock.o \
@@ -80,6 +81,11 @@ ${OBJECTDIR}/FFTAnalyser.o: FFTAnalyser.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -I/usr/include/eigen3 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/FFTAnalyser.o FFTAnalyser.cpp
+
+${OBJECTDIR}/FFTAnalyserResultHandlerBitmap.o: FFTAnalyserResultHandlerBitmap.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I/usr/include/eigen3 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/FFTAnalyserResultHandlerBitmap.o FFTAnalyserResultHandlerBitmap.cpp
 
 ${OBJECTDIR}/MonitorSeismograph.o: MonitorSeismograph.cpp 
 	${MKDIR} -p ${OBJECTDIR}

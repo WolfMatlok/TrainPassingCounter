@@ -20,7 +20,13 @@ using namespace helper;
 FFTAnalyser::FFTAnalyser()
 : m_maxSampels(1000)
 , m_samples(m_maxSampels)
-, m_counterProcessSamples(0)
+{
+}
+
+FFTAnalyser::FFTAnalyser(FFTAnalyserResultHandlerPtr handlerResults)
+: m_maxSampels(1000)
+, m_samples(m_maxSampels)
+, m_handlerResults(handlerResults)
 {
 }
 
@@ -60,41 +66,16 @@ void FFTAnalyser::processSamples(helper::TimeServerUnix::secAsDouble samplingDur
   Eigen::FFT<double> oFFT;
   oFFT.SetFlag(Eigen::FFT<double>::Flag::HalfSpectrum);
 
-  std::vector< std::complex<double> > samplesComplex;
-  samplesComplex.resize( 256 );
+  std::vector< std::complex<double> > samplesOverFrequency;
+  samplesOverFrequency.resize( 256 );
 
-  oFFT.fwd(&samplesComplex[0], &samplesOverTime[0], nFFT);
-
-  {
-    std::stringstream oStrStr;
-    FORMATSTREAMFORCSV(oStrStr);
-    oStrStr << "frequency;fft.magnitude;fft.real;fft.imag" << std::endl;
-
-    double dFFTIndex = 0;
-    for (auto oItComplex = samplesComplex.begin(); oItComplex != samplesComplex.end(); ++oItComplex)
-    {
-      auto frequency2Print = dFFTIndex * samplingRate / double(nFFT);
-      if(frequency2Print>=51.)
-        break;
-      oStrStr << std::fixed << dFFTIndex * samplingRate / double(nFFT) << ";" << std::abs(*oItComplex) << ";" << oItComplex->real() << ";" << oItComplex->imag() << std::endl;      
-      dFFTIndex+=1.;
-    }
-    cCommonTools::writeFile(STMSTR("/home/pi/images/fftdata."<< FI(8,'0') << m_counterProcessSamples <<".csv"), oStrStr.str());
-  }
-
-
-  {
-    std::stringstream oStrStr; FORMATSTREAMFORCSV(oStrStr);
-    int idx = 0;
-    oStrStr << "idx;singal over time" << std::endl;
-    std::for_each(samplesOverTime.begin(), samplesOverTime.end(), [&](double sample)
-    {
-      oStrStr << idx++ << ";" << sample << std::endl;
-    });
-    cCommonTools::writeFile(STMSTR("/home/pi/images/signal."<< FI(8,'0') << m_counterProcessSamples <<".csv"), oStrStr.str());
-  }
+  oFFT.fwd(&samplesOverFrequency[0], &samplesOverTime[0], nFFT);
   
-  m_counterProcessSamples++;
+  if(nullptr != m_handlerResults)
+  {
+    m_handlerResults->handleSamplesOverFrequecy(samplesOverFrequency, samplingRate, double(nFFT));
+    m_handlerResults->handleSamplesOverTime(samplesOverTime).m_counterProcessSamples++;
+  }
 
 }
 

@@ -22,7 +22,7 @@ public:
   
 private:
   cGyroServer m_devGyroscope;
-  DIFFCOUNTER<> m_diffCounter_Acc;
+  FILTERSIMPLE<> m_filterAcceleration;
   FFTAnalyser m_analyserFFT;
   helper::Age m_ageForPrinting;
 

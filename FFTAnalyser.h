@@ -9,13 +9,14 @@
 
 #include "TimeServer.h"
 #include "TimeServerClock.h"
+#include "FFTAnalyserResultHandler.h"
 #include <utility>
 
 class FFTAnalyser
 {
 public:
-
   FFTAnalyser();
+  FFTAnalyser(FFTAnalyserResultHandlerPtr handlerResults);
 
   virtual ~FFTAnalyser();
 
@@ -26,6 +27,7 @@ public:
   void processSamples(helper::TimeServerUnix::secAsDouble samplingDuration);
 
 private:
+  FFTAnalyserResultHandlerPtr m_handlerResults;
 
   const uint32_t m_maxSampels;
 
@@ -36,16 +38,15 @@ private:
   };
 
   boost::circular_buffer<sample> m_samples;
-  
+
   /**
    * extracts a simple double vector from samples
    */
   std::vector<double> getSamples();
-  
+
   /**
    * calcs a index for the amplitude spectrum
    */
   std::vector<double> getFrequencyIndex(double N, double frequencyResolution);
-  
-  uint32_t m_counterProcessSamples;
+
 };
