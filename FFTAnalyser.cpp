@@ -18,15 +18,16 @@
 using namespace helper;
 
 FFTAnalyser::FFTAnalyser()
-: m_maxSampels(1000)
+: m_maxSampels(150)
 , m_samples(m_maxSampels)
 {
 }
 
 FFTAnalyser::FFTAnalyser(FFTAnalyserResultHandlerPtr handlerResults)
-: m_maxSampels(1000)
+: m_maxSampels(150)
 , m_samples(m_maxSampels)
 , m_handlerResults(handlerResults)
+, m_samplingRate(0)
 {
 }
 
@@ -47,10 +48,7 @@ bool FFTAnalyser::add(double p_sample)
 
 void FFTAnalyser::processSamples()
 {
-  auto timepointStartMS = m_samples.begin()->m_timestamp;
-  auto timepointEndMS = m_samples.rbegin()->m_timestamp;
-  auto deltaTSec = boost::chrono::duration_cast<TimeServerUnix::secAsDouble>(timepointEndMS - timepointStartMS);
-  processSamples(deltaTSec);
+  processSamples(getDurationOverallSamples());
 }
 
 void FFTAnalyser::processSamples(helper::TimeServerUnix::secAsDouble samplingDuration)
@@ -58,8 +56,8 @@ void FFTAnalyser::processSamples(helper::TimeServerUnix::secAsDouble samplingDur
   auto samplesOverTime = getSamples();
   auto&& deltaTSec = samplingDuration;
   auto N = double(samplesOverTime.size());
-  auto samplingRate = N / deltaTSec.count();
-  auto frequencyResolution = samplingRate / N;
+  m_samplingRate = N / deltaTSec.count();
+  auto frequencyResolution = m_samplingRate / N;
   Eigen::FFT<double>::Index nFFT = 256;
 
 
@@ -67,16 +65,29 @@ void FFTAnalyser::processSamples(helper::TimeServerUnix::secAsDouble samplingDur
   oFFT.SetFlag(Eigen::FFT<double>::Flag::HalfSpectrum);
 
   std::vector< std::complex<double> > samplesOverFrequency;
-  samplesOverFrequency.resize( 256 );
+  samplesOverFrequency.resize(256);
 
   oFFT.fwd(&samplesOverFrequency[0], &samplesOverTime[0], nFFT);
-  
-  if(nullptr != m_handlerResults)
+
+  if (nullptr != m_handlerResults && m_handlerResults->validate(samplesOverFrequency, m_samplingRate, double(nFFT)))
   {
-    m_handlerResults->handleSamplesOverFrequecy(samplesOverFrequency, samplingRate, double(nFFT));
+    m_handlerResults->handleSamplesOverFrequecy(samplesOverFrequency, m_samplingRate, double(nFFT));
     m_handlerResults->handleSamplesOverTime(samplesOverTime).m_counterProcessSamples++;
+    m_handlerResults->generateReport();
   }
 
+}
+
+helper::TimeServerUnix::secAsDouble FFTAnalyser::getDurationOverallSamples()
+{
+  auto timepointStartMS = m_samples.begin()->m_timestamp;
+  auto timepointEndMS = m_samples.rbegin()->m_timestamp;
+  return std::move(boost::chrono::duration_cast<TimeServerUnix::secAsDouble>(timepointEndMS - timepointStartMS));
+}
+
+double FFTAnalyser::getLastSamplingRate()
+{
+  return double(m_samples.size()) / double(getDurationOverallSamples().count());
 }
 
 std::vector<double> FFTAnalyser::getSamples()

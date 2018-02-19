@@ -6,50 +6,40 @@
  */
 
 #include "FFTAnalyserResultHandler.h"
+#include <cv.h>
+#include <highgui.h>
+#include "opencv2/imgproc/imgproc.hpp"
 
 #pragma once
 
 class FFTAnalyserResultHandlerBitmap : public FFTAnalyserResultHandler
 {
 public:
-  FFTAnalyserResultHandlerBitmap():FFTAnalyserResultHandler("FFTAnalyserResultHandlerBitmap"){}
-  virtual ~FFTAnalyserResultHandlerBitmap(){}
+  FFTAnalyserResultHandlerBitmap();
+
+  virtual ~FFTAnalyserResultHandlerBitmap();
+
+  virtual FFTAnalyserResultHandler& handleSamplesOverFrequecy(std::vector< std::complex<double> >& samplesOverFrequency, double samplingRate, double nFFT) override;
+
+  /**
+   * expects samples within range [-2;+2]
+   */
+  virtual FFTAnalyserResultHandler& handleSamplesOverTime(std::vector<double>& samplesOverTime) override;
   
-  virtual FFTAnalyserResultHandler& handleSamplesOverFrequecy(std::vector< std::complex<double> >& samplesOverFrequency, double samplingRate, double nFFT) override
-  {
-    std::stringstream oStrStr;
-    FORMATSTREAMFORCSV(oStrStr);
-    oStrStr << "frequency;fft.magnitude;fft.real;fft.imag" << std::endl;
-
-    double dFFTIndex = 0;
-    for (auto oItComplex = samplesOverFrequency.begin(); oItComplex != samplesOverFrequency.end(); ++oItComplex)
-    {
-      auto frequency2Print = dFFTIndex * samplingRate / nFFT;
-      if (frequency2Print >= 51.)
-        break;
-      oStrStr << std::fixed << dFFTIndex * samplingRate / nFFT << ";" << std::abs(*oItComplex) << ";" << oItComplex->real() << ";" << oItComplex->imag() << std::endl;
-      dFFTIndex += 1.;
-    }
-    cCommonTools::writeFile(STMSTR("/home/pi/images/fftdata." << FI(8, '0') << m_counterProcessSamples << ".csv"), oStrStr.str());
-
-    return *this;
-  }
-
-  virtual FFTAnalyserResultHandler& handleSamplesOverTime(std::vector<double>& samplesOverTime) override
-  {
-    std::stringstream oStrStr;
-    FORMATSTREAMFORCSV(oStrStr);
-    int idx = 0;
-    oStrStr << "idx;singal over time" << std::endl;
-    std::for_each(samplesOverTime.begin(), samplesOverTime.end(), [&](double sample)
-    {
-      oStrStr << idx++ << ";" << sample << std::endl;
-    });
-    cCommonTools::writeFile(STMSTR("/home/pi/images/signal." << FI(8, '0') << m_counterProcessSamples << ".csv"), oStrStr.str());
-
-    return *this;
-  }  
+  virtual bool validate(std::vector< std::complex<double> >& samplesOverFrequency, double samplingRate, double nFFT) override;
   
-  private:
+
+  virtual void generateReport() override;
+
+   
+private:
+  
+  unsigned int getCounter();
+    
+  cv::Mat m_imgRaw;
+  cv::Mat m_imgFrequency;
+  cv::Mat m_imgSamplesOverTime;
   
 };
+
+typedef std::tr1::shared_ptr<FFTAnalyserResultHandlerBitmap> FFTAnalyserResultHandlerBitmapPtr;

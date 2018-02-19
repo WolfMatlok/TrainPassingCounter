@@ -18,6 +18,8 @@ namespace GyroServer
     double X;
     double Y;
     double Z;
+    
+    double getLenght(){return sqrt(X*X + Y*Y + Z*Z);}
   };
 }
 

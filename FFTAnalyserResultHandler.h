@@ -16,8 +16,10 @@ public:
   FFTAnalyserResultHandler(std::string name) : m_name(name), m_counterProcessSamples(0)
   {
   }
-  
-  virtual ~FFTAnalyserResultHandler(){}
+
+  virtual ~FFTAnalyserResultHandler()
+  {
+  }
 
   virtual FFTAnalyserResultHandler& handleSamplesOverFrequecy(std::vector< std::complex<double> >& samplesOverFrequency, double samplingRate, double nFFT)
   {
@@ -53,6 +55,13 @@ public:
 
     return *this;
   }
+
+  virtual bool validate(std::vector< std::complex<double> >& samplesOverFrequency, double samplingRate, double nFFT)
+  {
+    return true;
+  };
+  
+  virtual void generateReport(){};
 
 public:
   uint32_t m_counterProcessSamples;

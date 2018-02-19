@@ -36,6 +36,7 @@
 #define LOG_WARNING(STRMSG)         std::cout << "WARNING: " << LOGSTR(__FUNCTION__, STRMSG) << std::endl
 #define LOG_DEBUG(STRMSG)           std::cout << "  DEBUG: " << LOGSTR(__FUNCTION__, STRMSG) << std::endl
 #define LOG_TRACE(STRMSG)           std::cout << "  TRACE: " << LOGSTR(__FUNCTION__, STRMSG) << std::endl
+#define LOG_INFO(STRMSG)            std::cout << "   INFO: " << LOGSTR(__FUNCTION__, STRMSG) << std::endl
 
 template <class charT>
 struct no_separator : public std::numpunct<charT>

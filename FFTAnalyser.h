@@ -26,6 +26,10 @@ public:
   void processSamples();
   void processSamples(helper::TimeServerUnix::secAsDouble samplingDuration);
 
+  helper::TimeServerUnix::secAsDouble getDurationOverallSamples();
+  
+  double getLastSamplingRate();
+
 private:
   FFTAnalyserResultHandlerPtr m_handlerResults;
 
@@ -48,5 +52,6 @@ private:
    * calcs a index for the amplitude spectrum
    */
   std::vector<double> getFrequencyIndex(double N, double frequencyResolution);
-
+  
+  double m_samplingRate;
 };

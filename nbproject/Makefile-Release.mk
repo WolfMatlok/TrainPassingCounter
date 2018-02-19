@@ -41,6 +41,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/MonitorSeismograph.o \
 	${OBJECTDIR}/TimeServer.o \
 	${OBJECTDIR}/TimeServerClock.o \
+	${OBJECTDIR}/View/View.o \
 	${OBJECTDIR}/cCamera.o \
 	${OBJECTDIR}/cCommonTools.o \
 	${OBJECTDIR}/cGyroServer.o \
@@ -101,6 +102,11 @@ ${OBJECTDIR}/TimeServerClock.o: TimeServerClock.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -I/usr/include/eigen3 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/TimeServerClock.o TimeServerClock.cpp
+
+${OBJECTDIR}/View/View.o: View/View.cpp 
+	${MKDIR} -p ${OBJECTDIR}/View
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -I/usr/include/eigen3 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/View/View.o View/View.cpp
 
 ${OBJECTDIR}/cCamera.o: cCamera.cpp 
 	${MKDIR} -p ${OBJECTDIR}
