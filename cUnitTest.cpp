@@ -99,6 +99,9 @@ void cUnitTest::CheckGyroSensor()
   while (true)
   {
     oGyroDev.processData();
+
+    //std::cout << FF(5, 4, '0') << " ACCELLENGTH:" << oGyroDev.getAcceleration().getLenght() << cCommonTools::ROTATECURSOR() << "\r";
+
   }
 
 }
@@ -138,27 +141,28 @@ void cUnitTest::CheckFFT()
 {
   double N = 1000., NCounter = 0.;
   double samplingRateHZ = 100.;
-  double samplingPeriodMS = 1000./samplingRateHZ;
+  double samplingPeriodMS = 1000. / samplingRateHZ;
   std::vector<double> vecOverTime(N);
-  
+
   double dPeriodPercent = 0.0;
-  std::generate(vecOverTime.begin(), vecOverTime.end(), [&](){
-    
-    double ret =    std::cos(  3. * dPeriodPercent * (2.*cCommonTools::PI) )
-                  + std::cos(  5. * dPeriodPercent * (2.*cCommonTools::PI) )
-                  + std::cos( 10. * dPeriodPercent * (2.*cCommonTools::PI) )
-                  + std::cos( 20. * dPeriodPercent * (2.*cCommonTools::PI) )
-                  + std::cos( 30. * dPeriodPercent * (2.*cCommonTools::PI) )
-                  + std::cos( 40. * dPeriodPercent * (2.*cCommonTools::PI) )
-                  + std::cos( 50. * dPeriodPercent * (2.*cCommonTools::PI) );
-    
-    dPeriodPercent+=(samplingPeriodMS/1000.);   
-    
-    if(dPeriodPercent >= 100.)
-      dPeriodPercent = 0.;    
-    
-    return ret;
-  });
+  std::generate(vecOverTime.begin(), vecOverTime.end(), [&]()
+  {
+
+    double ret = std::cos(3. * dPeriodPercent * (2. * cCommonTools::PI))
+            + std::cos(5. * dPeriodPercent * (2. * cCommonTools::PI))
+            + std::cos(10. * dPeriodPercent * (2. * cCommonTools::PI))
+            + std::cos(20. * dPeriodPercent * (2. * cCommonTools::PI))
+            + std::cos(30. * dPeriodPercent * (2. * cCommonTools::PI))
+            + std::cos(40. * dPeriodPercent * (2. * cCommonTools::PI))
+            + std::cos(50. * dPeriodPercent * (2. * cCommonTools::PI));
+
+    dPeriodPercent += (samplingPeriodMS / 1000.);
+
+    if (dPeriodPercent >= 100.)
+            dPeriodPercent = 0.;
+
+      return ret;
+    });
 
   FFTAnalyser analyserFFT(FFTAnalyserResultHandlerPtr(new FFTAnalyserResultHandler("UnitTest")));
   AVGDEVCOUNTER3<> avgOfCycle(vecOverTime.size());
@@ -166,27 +170,28 @@ void cUnitTest::CheckFFT()
   {
     helper::Age ageOfCycle;
     analyserFFT.add(sample);
-    cCommonTools::Sleep(samplingPeriodMS);
-    std::cout << "Generating sample data for unittest " << FF(6,2,'0') << 100.*(NCounter++/N)  << "% " <<  cCommonTools::ROTATECURSOR() << "\r";
-    avgOfCycle.SetValue( ageOfCycle.GetAgeMS(true).count() );
+            cCommonTools::Sleep(samplingPeriodMS);
+            std::cout << "Generating sample data for unittest " << FF(6, 2, '0') << 100. * (NCounter++ / N) << "% " << cCommonTools::ROTATECURSOR() << "\r";
+            avgOfCycle.SetValue(ageOfCycle.GetAgeMS(true).count());
   });
-  
+
   std::cout << std::endl << "avgSamplingRate:" << avgOfCycle.GetAvg() << " stddevSamplingrate:" << avgOfCycle.GetStdDev() << std::endl;
-  
+
   analyserFFT.processSamples();
-  
+
   return;
 }
 
 void cUnitTest::CheckGyroHandler()
 {
-  MonitorSeismograph monSeismograph;
-  
+  MonitorSeismograph monSeismograph(100.);
+
   helper::Age ageTest;
-  helper::Age ageCylcle;
-  while(ageTest.GetAgeS().count() <= 60 /*43200*/) //12 Stunden
+
+
+  while (ageTest.GetAgeS().count() <= 12 * 3600) //12 Stunden
   {
+    monSeismograph.waitForNextProcessingIteration();
     monSeismograph.processData();
-    cCommonTools::Sleep( 10 - ageCylcle.GetAgeMS(true).count());
   }
 }
