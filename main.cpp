@@ -1,15 +1,15 @@
 #include <iostream>
 #include "cUnitTest.h"
-
+#include "View.h"
 
  
 int main ( int argc,char **argv )
 {
-#if 1
+#if 0
   cUnitTest::DoAllTests();
   return 0;
 #endif
   
   
-  return 0;
+  return View(argc, argv).run();
 }

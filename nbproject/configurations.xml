@@ -11,7 +11,8 @@
       <itemPath>MonitorSeismograph.h</itemPath>
       <itemPath>TimeServer.h</itemPath>
       <itemPath>TimeServerClock.h</itemPath>
-      <itemPath>View/View.h</itemPath>
+      <itemPath>View.cpp</itemPath>
+      <itemPath>View.h</itemPath>
       <itemPath>cCamera.h</itemPath>
       <itemPath>cCommonTools.h</itemPath>
       <itemPath>cGyroServer.h</itemPath>
@@ -30,7 +31,6 @@
       <itemPath>MonitorSeismograph.cpp</itemPath>
       <itemPath>TimeServer.cpp</itemPath>
       <itemPath>TimeServerClock.cpp</itemPath>
-      <itemPath>View/View.cpp</itemPath>
       <itemPath>cCamera.cpp</itemPath>
       <itemPath>cCommonTools.cpp</itemPath>
       <itemPath>cGyroServer.cpp</itemPath>
@@ -58,10 +58,16 @@
         <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
       <compileType>
+        <cTool>
+          <incDir>
+            <pElem>/usr/include/qt4/Qt</pElem>
+          </incDir>
+        </cTool>
         <ccTool>
           <commandlineTool>g++</commandlineTool>
           <incDir>
             <pElem>/usr/include/eigen3</pElem>
+            <pElem>/usr/include/qt4</pElem>
           </incDir>
           <commandLine>`pkg-config opencv --cflags --libs` -std=c++11 -L /opt/vc/lib -lraspicam -lraspicam_cv -lmmal -lmmal_core -lmmal_util -lopencv_imgproc -lopencv_core -lboost_thread -lboost_system -lboost_chrono -lwiringPi</commandLine>
         </ccTool>
@@ -92,9 +98,9 @@
       </item>
       <item path="TimeServerClock.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="View/View.cpp" ex="false" tool="1" flavor2="0">
+      <item path="View.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="View/View.h" ex="false" tool="3" flavor2="0">
+      <item path="View.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="cCamera.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -130,6 +136,7 @@
           <commandlineTool>g++</commandlineTool>
           <incDir>
             <pElem>/usr/include/eigen3</pElem>
+            <pElem>/usr/include/qt4</pElem>
           </incDir>
           <commandLine>`pkg-config opencv --cflags --libs` -std=c++11 -L /opt/vc/lib -lraspicam -lraspicam_cv -lmmal -lmmal_core -lmmal_util -lopencv_imgproc -lopencv_core -lboost_thread -lboost_system -lboost_chrono -lwiringPi</commandLine>
         </ccTool>
@@ -166,9 +173,9 @@
       </item>
       <item path="TimeServerClock.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="View/View.cpp" ex="false" tool="1" flavor2="0">
+      <item path="View.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="View/View.h" ex="false" tool="3" flavor2="0">
+      <item path="View.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="cCamera.cpp" ex="false" tool="1" flavor2="0">
       </item>

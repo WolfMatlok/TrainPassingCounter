@@ -41,7 +41,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/MonitorSeismograph.o \
 	${OBJECTDIR}/TimeServer.o \
 	${OBJECTDIR}/TimeServerClock.o \
-	${OBJECTDIR}/View/View.o \
+	${OBJECTDIR}/View.o \
 	${OBJECTDIR}/cCamera.o \
 	${OBJECTDIR}/cCommonTools.o \
 	${OBJECTDIR}/cGyroServer.o \
@@ -76,62 +76,62 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/trainpassingcounter: ${OBJECTFILES}
 ${OBJECTDIR}/Age.o: Age.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -I/usr/include/eigen3 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Age.o Age.cpp
+	$(COMPILE.cc) -O2 -I/usr/include/eigen3 -I/usr/include/qt4 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Age.o Age.cpp
 
 ${OBJECTDIR}/FFTAnalyser.o: FFTAnalyser.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -I/usr/include/eigen3 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/FFTAnalyser.o FFTAnalyser.cpp
+	$(COMPILE.cc) -O2 -I/usr/include/eigen3 -I/usr/include/qt4 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/FFTAnalyser.o FFTAnalyser.cpp
 
 ${OBJECTDIR}/FFTAnalyserResultHandlerBitmap.o: FFTAnalyserResultHandlerBitmap.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -I/usr/include/eigen3 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/FFTAnalyserResultHandlerBitmap.o FFTAnalyserResultHandlerBitmap.cpp
+	$(COMPILE.cc) -O2 -I/usr/include/eigen3 -I/usr/include/qt4 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/FFTAnalyserResultHandlerBitmap.o FFTAnalyserResultHandlerBitmap.cpp
 
 ${OBJECTDIR}/MonitorSeismograph.o: MonitorSeismograph.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -I/usr/include/eigen3 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/MonitorSeismograph.o MonitorSeismograph.cpp
+	$(COMPILE.cc) -O2 -I/usr/include/eigen3 -I/usr/include/qt4 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/MonitorSeismograph.o MonitorSeismograph.cpp
 
 ${OBJECTDIR}/TimeServer.o: TimeServer.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -I/usr/include/eigen3 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/TimeServer.o TimeServer.cpp
+	$(COMPILE.cc) -O2 -I/usr/include/eigen3 -I/usr/include/qt4 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/TimeServer.o TimeServer.cpp
 
 ${OBJECTDIR}/TimeServerClock.o: TimeServerClock.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -I/usr/include/eigen3 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/TimeServerClock.o TimeServerClock.cpp
+	$(COMPILE.cc) -O2 -I/usr/include/eigen3 -I/usr/include/qt4 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/TimeServerClock.o TimeServerClock.cpp
 
-${OBJECTDIR}/View/View.o: View/View.cpp 
-	${MKDIR} -p ${OBJECTDIR}/View
+${OBJECTDIR}/View.o: View.cpp 
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -I/usr/include/eigen3 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/View/View.o View/View.cpp
+	$(COMPILE.cc) -O2 -I/usr/include/eigen3 -I/usr/include/qt4 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/View.o View.cpp
 
 ${OBJECTDIR}/cCamera.o: cCamera.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -I/usr/include/eigen3 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/cCamera.o cCamera.cpp
+	$(COMPILE.cc) -O2 -I/usr/include/eigen3 -I/usr/include/qt4 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/cCamera.o cCamera.cpp
 
 ${OBJECTDIR}/cCommonTools.o: cCommonTools.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -I/usr/include/eigen3 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/cCommonTools.o cCommonTools.cpp
+	$(COMPILE.cc) -O2 -I/usr/include/eigen3 -I/usr/include/qt4 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/cCommonTools.o cCommonTools.cpp
 
 ${OBJECTDIR}/cGyroServer.o: cGyroServer.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -I/usr/include/eigen3 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/cGyroServer.o cGyroServer.cpp
+	$(COMPILE.cc) -O2 -I/usr/include/eigen3 -I/usr/include/qt4 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/cGyroServer.o cGyroServer.cpp
 
 ${OBJECTDIR}/cUnitTest.o: cUnitTest.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -I/usr/include/eigen3 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/cUnitTest.o cUnitTest.cpp
+	$(COMPILE.cc) -O2 -I/usr/include/eigen3 -I/usr/include/qt4 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/cUnitTest.o cUnitTest.cpp
 
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -I/usr/include/eigen3 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
+	$(COMPILE.cc) -O2 -I/usr/include/eigen3 -I/usr/include/qt4 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
 
 # Subprojects
 .build-subprojects:
